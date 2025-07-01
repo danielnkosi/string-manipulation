@@ -1,74 +1,26 @@
-"""
-This script introduces basic string utilities and formatting in Python.
-It includes helpful constants, word capitalisation and simple templating.
-"""
-
-# --- Character Groups ---
-WHITESPACE = ' \t\n\r\v\f'
-LOWERCASE = 'abcdefghijklmnopqrstuvwxyz'
-UPPERCASE = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
-LETTERS = LOWERCASE + UPPERCASE
-DIGITS = '0123456789'
-HEX_DIGITS = DIGITS + 'abcdefABCDEF'
-OCTAL_DIGITS = '01234567'
-PUNCTUATION = r"""!"#$%&'()*+,-./:;<=>?@[\]^_`{|}~"""
-PRINTABLE = LETTERS + DIGITS + PUNCTUATION + WHITESPACE
-
-# --- Word Utilities ---
-def capitalise_words(text, sep=None):
-    """
-    Capitalises each word in the given string.
-    
-    Example:
-        capitalise_words("hello world") -> "Hello World"
-    """
-    parts = text.split(sep)
-    return (sep or ' ').join(word.capitalise() for word in parts)
-
-# --- Simple Templating ---
-import re
-
-class SimpleTemplate:
-    """
-    Replaces $placeholders in a string with values from a dictionary.
-    """
-    def __init__(self, template):
-        self.template = template
-        self.pattern = re.compile(r'\$(\w+)|\$\$')
-
-    def substitute(self, values):
-        def replacer(match):
-            if match.group(0) == '$$':
-                return '$'
-            key = match.group(1)
-            if key in values:
-                return str(values[key])
-            raise KeyError(f"Missing key: {key}")
-        return self.pattern.sub(replacer, self.template)
-
-    def safe_substitute(self, values):
-        def replacer(match):
-            if match.group(0) == '$$':
-                return '$'
-            key = match.group(1)
-            return str(values.get(key, match.group(0)))
-        return self.pattern.sub(replacer, self.template)
-
-# --- Example Usage ---
-if __name__ == "__main__":
-    print("Lowercase letters:", LOWERCASE)
-    print("Digits:", DIGITS)
-    print("All printable characters:", PRINTABLE[:50] + "...")
-
-    # Capitalizing words
-    sentence = "  python  is fun "
-    print("Original:", sentence)
+Python 3.13.3 (tags/v3.13.3:6280bb5, Apr  8 2025, 14:47:33) [MSC v.1943 64 bit (AMD64)] on win32
+Enter "help" below or click "Help" above for more information.
+>>> 
+================================ RESTART: Shell ================================
+>>> 
+===== RESTART: C:/Users/onuud/AppData/Local/Programs/Python/Python313/q.py =====
+Lowercase letters: abcdefghijklmnopqrstuvwxyz
+Digits: 0123456789
+All printable characters: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX...
+Original:   python  is fun 
+Traceback (most recent call last):
+  File "C:/Users/onuud/AppData/Local/Programs/Python/Python313/q.py", line 66, in <module>
     print("Capitalised:", capitalise_words(sentence))
-
-    # Using the template
-    tpl = SimpleTemplate("Hello $name, you have $$ $amount in your $account account.")
-    print("Substituted:", tpl.substitute({
-        'name': 'Alice',
-        'amount': '100',
-        'account': 'savings'
-    }))
+  File "C:/Users/onuud/AppData/Local/Programs/Python/Python313/q.py", line 26, in capitalise_words
+    return (sep or ' ').join(word.capitalise() for word in parts)
+  File "C:/Users/onuud/AppData/Local/Programs/Python/Python313/q.py", line 26, in <genexpr>
+    return (sep or ' ').join(word.capitalise() for word in parts)
+AttributeError: 'str' object has no attribute 'capitalise'. Did you mean: 'capitalize'?
+>>> 
+===== RESTART: C:/Users/onuud/AppData/Local/Programs/Python/Python313/d.py =====
+Lowercase letters: abcdefghijklmnopqrstuvwxyz
+Digits: 0123456789
+All printable characters: abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWX...
+Original:   python  is fun 
+Capitalised: Python Is Fun
+Substituted: Hello Alice, you have $ 100 in your savings account.
